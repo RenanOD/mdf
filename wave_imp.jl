@@ -1,4 +1,4 @@
-function wave_exp(f1, f2, xf, tf, dx, dt, a, e, h, g)
+function wave_imp(f1, f2, xf, tf, dx, dt, a, e, h, g)
 
 	J = Int(xf/dx)
 	N = Int(tf/dt)
@@ -6,8 +6,8 @@ function wave_exp(f1, f2, xf, tf, dx, dt, a, e, h, g)
 	M1 = spzeros(Float64, J-2, J-2)
 	M2 = spzeros(Float64, J-2, J-2)
 	M3 = spzeros(Float64, J-2, J-2)
-	k1 = -dt*g*h/(2*dx)
-	k2 = -dt/(2*dx)
+	k1 = dt*g*h/(2*dx)
+	k2 = dt/(2*dx)
 	x = Float64[]
     for i = 1:J
       push!(x, i*dx)
@@ -28,10 +28,11 @@ function wave_exp(f1, f2, xf, tf, dx, dt, a, e, h, g)
 	B = [M1 M2; M3 M1]
 
 	for i = 2:N
-		sol[:,i] = B*sol[:,i-1]
+		sol[:,i] = B\sol[:,i-1]
 	end
 	return sol
 end
+
 
 
 
