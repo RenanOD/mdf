@@ -3,8 +3,8 @@ include("wave_imp.jl")
 g = 1
 dx = .05
 dt = .005
-xf = 10
-tf = 8
+xf = 9
+tf = 6
 a = 1
 e = 0.1
 h = 1
@@ -16,8 +16,8 @@ sol = wave_imp(f1, f2, xf, tf, dx, dt, a, e, h, g)
 J = Int(xf/dx)
 N = Int(tf/dt)
 
-est = 15
-passo = floor(N/(est-1))
+est = 180
+passo = floor(N/(est))
 aux = zeros(J-2, est)
 j = 1
 k = 1
@@ -36,13 +36,19 @@ for i = 2:N
 end
 
 x = Float64[]
-for i = 1:J
+for i = 1:(J-2)
   push!(x, i*dx)
 end
 
-a = plot(x, aux[:, 1])
-
-for i = 2:est
-  plot!(x, aux[:, i])
+tt = 0
+anim = @animate for i = 1:est
+t = (i-1)*(N/est)*dt
+if t%.5 < dt
+  tt = t
+  plot(x, aux[:, i], line=(3), label="$t s", title = "Implicit (dt = $dt s)", xlabel="Posicao", ylabel="Altura", ylim=(-.7,1.4))
+else
+  plot(x, aux[:, i], line=(3), label="$tt s", title = "Implicit (dt = $dt s)", xlabel="Posicao", ylabel="Altura", ylim=(-.7,1.4))
 end
-a
+end
+
+gif(anim, "implicit.gif", fps=30)

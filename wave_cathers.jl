@@ -8,7 +8,7 @@ function wave_cathers(f1, f2, xf, tf, dx, dt, a, e, h, g)
 	M3 = spzeros(Float64, J-2, J-2)
 
 	x = Float64[]
-	for i = 1:J
+	for i = 0:J
       push!(x, i*dx)
     end
     for i = 1:J-2
@@ -19,9 +19,6 @@ function wave_cathers(f1, f2, xf, tf, dx, dt, a, e, h, g)
     for i = 1:J-1
     	push!(m, (x[i+1] - x[i])/(6*dt))
     end
-    M1 = zeros(Float64, J-2, J-2)
-	M2 = zeros(Float64, J-2, J-2)
-	M3 = zeros(Float64, J-2, J-2)
 
 	for i = 2:J-2
     	M1[i-1,i] = m[i]
@@ -36,10 +33,9 @@ function wave_cathers(f1, f2, xf, tf, dx, dt, a, e, h, g)
 	end
 	A = [M1 M2; M3 M1]
 	B = [M1 -M2; -M3 M1]
-	C = inv(A)*B
 
 	for i = 2:N
-		sol[:,i] = C*sol[:,i-1]
+		sol[:,i] = A\(B*sol[:,i-1])
 	end
 	return sol
 end

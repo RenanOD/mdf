@@ -1,4 +1,4 @@
-include("wave_exp.jl")
+include("wave_cn.jl")
 
 g = 1
 dx = .05
@@ -11,7 +11,7 @@ h = 1
 f1(x) = exp(-(x - a)^2/e)
 f2(x) = exp(-(x - a)^2/e)
 
-sol = wave_exp(f1, f2, xf, tf, dx, dt, a, e, h, g)
+sol = wave_cn(f1, f2, xf, tf, dx, dt, a, e, h, g)
 
 J = Int(xf/dx)
 N = Int(tf/dt)
@@ -45,10 +45,10 @@ anim = @animate for i = 1:est
 t = (i-1)*(N/est)*dt
 if t%.5 < dt
   tt = t
-  plot(x, aux[:, i], line=(3), label="$t s", title = "Explicit (dt = $dt s)", xlabel="Posicao", ylabel="Altura", ylim=(-.7,1.4))
+  plot(x, aux[:, i], line=(3), label="$t s", title = "Crank-Nicolson (dt = $dt s)", xlabel="Posicao", ylabel="Altura", ylim=(-.7,1.4))
 else
-  plot(x, aux[:, i], line=(3), label="$tt s", title = "Explicit (dt = $dt s)", xlabel="Posicao", ylabel="Altura", ylim=(-.7,1.4))
+  plot(x, aux[:, i], line=(3), label="$tt s", title = "Crank-Nicolson (dt = $dt s)", xlabel="Posicao", ylabel="Altura", ylim=(-.7,1.4))
 end
 end
 
-gif(anim, "explicit.gif", fps=30)
+gif(anim, "cn.gif", fps=30)

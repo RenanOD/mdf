@@ -1,4 +1,4 @@
-include("wave_cathers.jl")
+include("wave_cn.jl")
 
 g = 1
 dx = .05
@@ -11,7 +11,7 @@ h = 1
 f1(x) = exp(-(x - a)^2/e)
 f2(x) = exp(-(x - a)^2/e)
 
-sol = wave_cathers(f1, f2, xf, tf, dx, dt, a, e, h, g)
+sol = wave_cn(f1, f2, xf, tf, dx, dt, a, e, h, g)
 
 J = Int(xf/dx)
 N = Int(tf/dt)
